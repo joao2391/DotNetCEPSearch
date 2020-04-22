@@ -17,9 +17,23 @@ Install-Package DotNetCEPSearchApp -Version 1.0.0
 
 ## Usage
 
-TODO:
+After install:
 ```C#
-//TODO
+using DotNet.CEP.Search.App;
+```
+Get Addres by CEP
+```C#
+CepSearch cep = new CepSearch();
+string jsonResultAsync = await cep.GetAddressByCepAsync("numberOfCep");
+
+string jsonResult = GetAddressByCep("numberOfCep");
+```
+Get CEP by Address
+```C#
+CepSearch cep = new CepSearch();
+string jsonResultAsync = await cep.GetCepByAddressAsync("address");
+
+string jsonResult = cep.GetCepByAddress("address");
 ```
 
 ## Contributing
