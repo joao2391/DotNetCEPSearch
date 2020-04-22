@@ -1,7 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>João Paulo de Castro Lima</Authors>
+    <Product />
+    <Description>It is a library that helps you to get a CEP or Address.</Description>
+    <RepositoryUrl>https://github.com/joao2391/DotNetCEPSearch</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>webcrawling; webscrap; cep; correios;</PackageTags>
+    <Company>joao2391</Company>
+    <PackageProjectUrl>https://github.com/joao2391/DotNetCEPSearch</PackageProjectUrl>
+    <PackageId>DotNetCEPSearchApp</PackageId>
   </PropertyGroup>
 
   <ItemGroup>
