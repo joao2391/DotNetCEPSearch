@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1082
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.CEP.Search.App", "DotNet.CEP.Search.App\DotNet.CEP.Search.App.csproj", "{6E7C2133-A0EA-451D-8CE2-ED4E1F85BA5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNet.CEP.Search.Test", "..\..\tests\DotNet.CEP.Search.Test\DotNet.CEP.Search.Test.csproj", "{684EFA7B-3D06-4FDF-888C-12C95294AB25}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6E7C2133-A0EA-451D-8CE2-ED4E1F85BA5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E7C2133-A0EA-451D-8CE2-ED4E1F85BA5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E7C2133-A0EA-451D-8CE2-ED4E1F85BA5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E7C2133-A0EA-451D-8CE2-ED4E1F85BA5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{684EFA7B-3D06-4FDF-888C-12C95294AB25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{684EFA7B-3D06-4FDF-888C-12C95294AB25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{684EFA7B-3D06-4FDF-888C-12C95294AB25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{684EFA7B-3D06-4FDF-888C-12C95294AB25}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {575E1329-16CE-45A5-90C4-54B7DA952C2F}
+	EndGlobalSection
+EndGlobal
