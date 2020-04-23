@@ -12,7 +12,7 @@ None
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearchApp -Version 1.0.0
+Install-Package DotNetCEPSearch -Version 1.0.0
 ```
 
 ## Usage
