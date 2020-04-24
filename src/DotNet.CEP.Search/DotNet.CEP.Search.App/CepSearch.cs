@@ -69,10 +69,17 @@ namespace DotNet.CEP.Search.App
 
                 return JsonConvert.SerializeObject(responseCep);
             }
+            catch (HttpRequestException httpEx)
+            {
+                throw httpEx;
+            }
+            catch (HtmlWebException htmlEx)
+            {
+                throw htmlEx;
+            }
             catch (Exception ex)
             {
-
-                return string.Concat(Constants.ERROR_MESSAGE, ex.Message);
+                throw ex;
             }
         }
 
@@ -128,10 +135,17 @@ namespace DotNet.CEP.Search.App
 
                 return JsonConvert.SerializeObject(responseCep);
             }
+            catch (HttpRequestException httpEx)
+            {
+                throw httpEx;
+            }
+            catch (HtmlWebException htmlEx)
+            {
+                throw htmlEx;
+            }
             catch (Exception ex)
             {
-
-                return string.Concat(Constants.ERROR_MESSAGE, ex.Message);
+                throw ex;
             }
         }
 
@@ -212,9 +226,18 @@ namespace DotNet.CEP.Search.App
                 return JsonConvert.SerializeObject(hsRespEndereco);
 
             }
+            catch (HttpRequestException httpEx)
+            {
+
+                throw httpEx;
+            }
+            catch (HtmlWebException htmlEx)
+            {
+                throw htmlEx;
+            }
             catch (Exception ex)
             {
-                return string.Concat(Constants.ERROR_MESSAGE, ex.Message);
+                throw ex;
             }
         }
 
@@ -295,9 +318,18 @@ namespace DotNet.CEP.Search.App
                 return JsonConvert.SerializeObject(hsRespEndereco);
 
             }
+            catch (HttpRequestException httpEx)
+            {
+
+                throw httpEx;
+            }
+            catch (HtmlWebException htmlEx)
+            {
+                throw htmlEx;
+            }
             catch (Exception ex)
             {
-                return string.Concat(Constants.ERROR_MESSAGE, ex.Message);
+                throw ex;
             }
         }
 
