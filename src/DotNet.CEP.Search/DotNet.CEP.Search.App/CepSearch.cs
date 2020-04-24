@@ -10,7 +10,10 @@ using System.Threading.Tasks;
 
 namespace DotNet.CEP.Search.App
 {
-    public class CepSearch : BaseCepSearch
+    /// <summary>
+    /// Cep Search
+    /// </summary>
+    public class CepSearch : BaseCepSearch, ICepSearch
     {
         private readonly Regex rx = new Regex(@"[0-9]{5}[\d]{3}");
 
@@ -132,6 +135,11 @@ namespace DotNet.CEP.Search.App
             }
         }
 
+        /// <summary>
+        /// Returns the CEP number
+        /// </summary>
+        /// <param name="address">Full or partial address</param>
+        /// <returns>JSON with CEP number</returns>
         public async Task<string> GetCepByAddressAsync(string address)
         {
             try
@@ -210,6 +218,11 @@ namespace DotNet.CEP.Search.App
             }
         }
 
+        /// <summary>
+        /// Returns the CEP number
+        /// </summary>
+        /// <param name="address">Full or partial address</param>
+        /// <returns>JSON with CEP number</returns>
         public string GetCepByAddress(string address)
         {
             try

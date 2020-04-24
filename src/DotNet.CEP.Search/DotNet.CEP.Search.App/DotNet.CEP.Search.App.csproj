@@ -8,10 +8,14 @@
     <RepositoryUrl>https://github.com/joao2391/DotNetCEPSearch</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryType>Git</RepositoryType>
-    <PackageTags>webcrawling; webscrap; cep; correios;</PackageTags>
+    <PackageTags>webcrawling; webscrap; cep; correios; dotnetcore; dotnetstandard;</PackageTags>
     <Company>joao2391</Company>
     <PackageProjectUrl>https://github.com/joao2391/DotNetCEPSearch</PackageProjectUrl>
-    <PackageId>DotNetCEPSearchApp</PackageId>
+    <PackageId>DotNetCEPSearch</PackageId>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>C:\Users\JoãoPaulo\source\repos\DotNetCEPSearch\src\DotNet.CEP.Search\DotNet.CEP.Search.App\DotNet.CEP.Search.App.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
