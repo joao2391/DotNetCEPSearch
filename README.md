@@ -1,5 +1,7 @@
 # DotNet CEP Search
 
+[![Nuget](https://img.shields.io/nuget/v/DotNetCEPSearch)](https://www.nuget.org/packages/DotNetCEPSearch/) ![Nuget](https://img.shields.io/nuget/dt/DotNetCEPSearch)
+
 .Net library for helping you to get CEP or Address.
 
 ## Notes
