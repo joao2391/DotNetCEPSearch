@@ -37,6 +37,7 @@ namespace DotNet.CEP.Search.App
                     {"tipoCEP","ALL" },
                     {"semelhante","N" }
                 };
+               
 
                 var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
                 {

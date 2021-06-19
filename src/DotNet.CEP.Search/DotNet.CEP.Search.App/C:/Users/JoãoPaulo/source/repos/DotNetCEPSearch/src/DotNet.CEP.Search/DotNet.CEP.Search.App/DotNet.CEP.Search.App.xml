@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DotNet.CEP.Search.App</name>
+    </assembly>
+    <members>
+        <member name="T:DotNet.CEP.Search.App.CepSearch">
+            <summary>
+            Cep Search
+            </summary>
+        </member>
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCepAsync(System.String)">
+            <summary>
+            Returns the address
+            </summary>
+            <param name="cep">CEP number without '-'</param>
+            <returns>JSON with address</returns>
+        </member>
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCep(System.String)">
+            <summary>
+            Returns the address
+            </summary>
+            <param name="cep">CEP number without '-'</param>
+            <returns>JSON with address</returns>
+        </member>
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetCepByAddressAsync(System.String)">
+            <summary>
+            Returns the CEP number
+            </summary>
+            <param name="address">Full or partial address</param>
+            <returns>JSON with CEP number</returns>
+        </member>
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetCepByAddress(System.String)">
+            <summary>
+            Returns the CEP number
+            </summary>
+            <param name="address">Full or partial address</param>
+            <returns>JSON with CEP number</returns>
+        </member>
+    </members>
+</doc>

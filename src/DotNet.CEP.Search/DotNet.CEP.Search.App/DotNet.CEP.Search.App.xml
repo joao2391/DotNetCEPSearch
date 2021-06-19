@@ -4,6 +4,11 @@
         <name>DotNet.CEP.Search.App</name>
     </assembly>
     <members>
+        <member name="T:DotNet.CEP.Search.App.CepSearch">
+            <summary>
+            Cep Search
+            </summary>
+        </member>
         <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCepAsync(System.String)">
             <summary>
             Returns the address

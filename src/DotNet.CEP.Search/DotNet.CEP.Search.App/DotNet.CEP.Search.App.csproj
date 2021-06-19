@@ -12,6 +12,7 @@
     <Company>joao2391</Company>
     <PackageProjectUrl>https://github.com/joao2391/DotNetCEPSearch</PackageProjectUrl>
     <PackageId>DotNetCEPSearch</PackageId>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
