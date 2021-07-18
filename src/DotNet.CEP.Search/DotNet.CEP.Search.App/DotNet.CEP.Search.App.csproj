@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <Authors>João Paulo de Castro Lima</Authors>
     <Product />
     <Description>It is a library that helps you to get a CEP or Address.</Description>

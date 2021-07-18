@@ -7,7 +7,7 @@ namespace Tests
     public class CepSearchTests
     {
 
-        CepSearch cep;
+        CepSearch cep;        
         string validCep = "08499";
         string validAddress = "Rua Frei Caneca";
 
