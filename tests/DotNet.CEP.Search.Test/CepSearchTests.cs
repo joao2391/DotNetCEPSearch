@@ -8,8 +8,8 @@ namespace Tests
     {
 
         CepSearch cep;
-        string validCep = "12515520";
-        string validAddress = "Rua Fernandes Vieira";
+        string validCep = "08499";
+        string validAddress = "Rua Frei Caneca";
 
         [SetUp]
         public void Setup()
