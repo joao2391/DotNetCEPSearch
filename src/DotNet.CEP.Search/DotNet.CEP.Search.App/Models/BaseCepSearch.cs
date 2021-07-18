@@ -9,10 +9,10 @@ namespace DotNet.CEP.Search.App.Models
         protected HttpClient _client;
 
         public BaseCepSearch()
-        {
+        {            
             _client = new HttpClient()
             {
-                Timeout = TimeSpan.FromMinutes(30)
+                Timeout = TimeSpan.FromSeconds(5)
             };
         }
         
