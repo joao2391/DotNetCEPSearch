@@ -6,16 +6,16 @@ It is a .NET Standard library that helps you to get a CEP or Address from brazil
 You can use both in .NET Framework 4.x and .NET Core 2.x applications.
 
 ## Notes
-Version 1.0.1:
+Version 1.0.2:
 
-Fixed some issues
+Fixed URI principal
 
 ## Installation
 
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearch -Version 1.0.0
+Install-Package DotNetCEPSearch -Version 1.0.2
 ```
 
 ## Usage
