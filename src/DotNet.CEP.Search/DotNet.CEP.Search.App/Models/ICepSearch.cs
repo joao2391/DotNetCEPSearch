@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace DotNet.CEP.Search.App.Models
 {
-    internal interface ICepSearch
+    public interface ICepSearch
     {
         Task<string> GetAddressByCepAsync(string cep, CancellationToken cancellationToken);
 
