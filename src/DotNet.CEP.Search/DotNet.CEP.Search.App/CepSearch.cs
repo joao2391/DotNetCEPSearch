@@ -16,13 +16,13 @@ namespace DotNet.CEP.Search.App
     /// </summary>
     public class CepSearch : BaseCepSearch, ICepSearch
     {
-        public CepSearch()
-        {
-            ServicePointManager.ServerCertificateValidationCallback =  delegate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) 
-            { 
-                return true; 
-            };
-        }
+        // public CepSearch()
+        // {
+        //     ServicePointManager.ServerCertificateValidationCallback =  delegate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) 
+        //     { 
+        //         return true; 
+        //     };
+        // }
 
         /// <summary>
         /// Returns the address

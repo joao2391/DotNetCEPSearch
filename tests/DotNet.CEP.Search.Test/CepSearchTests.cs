@@ -1,26 +1,37 @@
 using DotNet.CEP.Search.App;
+using DotNet.CEP.Search.App.Models;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using Moq;
+using System.Threading;
 
 namespace Tests
 {
     public class CepSearchTests
     {
+<<<<<<< HEAD
 
         CepSearch cep;        
         string validCep = "08499";
         string validAddress = "Rua Frei Caneca";
 
+=======
+        FakeData fakeData;
+        
+        
+>>>>>>> test/net5
         [SetUp]
         public void Setup()
-        {
-            cep = new CepSearch();
+        {            
+            fakeData = new FakeData();
         }
 
         [Test]
         public async Task Should_Return_A_Valid_Address_Async()
         {
-            var result = await cep.GetAddressByCepAsync(validCep);            
+            var cep = new CepSearch();
+            
+            var result = await cep.GetAddressByCepAsync(FakeData.validCep);            
 
             Assert.IsNotNull(result);
         }
@@ -28,7 +39,9 @@ namespace Tests
         [Test]
         public void Should_Return_A_Valid_Address()
         {
-            var result = cep.GetAddressByCep(validCep);
+            var cep = new CepSearch();
+
+            var result = cep.GetAddressByCep(FakeData.validCep);
 
             Assert.IsNotNull(result);
         }
@@ -36,7 +49,9 @@ namespace Tests
         [Test]
         public async Task Should_Return_A_Valid_Cep_Async()
         {
-            var result = await cep.GetCepByAddressAsync(validAddress);
+            var cep = new CepSearch();
+
+            var result = await cep.GetCepByAddressAsync(FakeData.validAddress);
 
             Assert.IsNotNull(result);
         }
@@ -44,7 +59,9 @@ namespace Tests
         [Test]
         public void Should_Return_A_Valid_Cep()
         {
-            var result = cep.GetCepByAddress(validAddress);
+            var cep = new CepSearch();
+            
+            var result = cep.GetCepByAddress(FakeData.validAddress);
 
             Assert.IsNotNull(result);
         }
