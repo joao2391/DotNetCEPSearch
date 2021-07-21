@@ -9,17 +9,14 @@ namespace Tests
 {
     public class CepSearchTests
     {
-<<<<<<< HEAD
 
         CepSearch cep;        
         string validCep = "08499";
         string validAddress = "Rua Frei Caneca";
 
-=======
         FakeData fakeData;
         
         
->>>>>>> test/net5
         [SetUp]
         public void Setup()
         {            
