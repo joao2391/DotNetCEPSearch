@@ -1,6 +1,12 @@
 ﻿using DotNet.CEP.Search.App.Utils;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Threading.Tasks;
+using System.Net;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
+using System.Threading;
 
 namespace DotNet.CEP.Search.App.Models
 {
@@ -9,8 +15,13 @@ namespace DotNet.CEP.Search.App.Models
         protected HttpClient _client;
 
         public BaseCepSearch()
-        {            
-            _client = new HttpClient()
+        {
+            
+            HttpClientHandler clientHandler = new HttpClientHandler();
+            //clientHandler.ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => { return true; };
+            clientHandler.SslProtocols = System.Security.Authentication.SslProtocols.None;
+            
+            _client = new HttpClient(clientHandler)
             {
                 Timeout = TimeSpan.FromSeconds(5)
             };

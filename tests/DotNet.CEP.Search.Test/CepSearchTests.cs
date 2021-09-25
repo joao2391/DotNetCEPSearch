@@ -1,27 +1,15 @@
 using DotNet.CEP.Search.App;
-using DotNet.CEP.Search.App.Models;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using Moq;
-using System.Threading;
 
 namespace Tests
 {
     public class CepSearchTests
     {
 
-        CepSearch cep;        
-        string validCep = "08499";
-        string validAddress = "Rua Frei Caneca";
 
-        FakeData fakeData;
-        
-        
         [SetUp]
-        public void Setup()
-        {            
-            fakeData = new FakeData();
-        }
+        public void Setup() { }
 
         [Test]
         public async Task Should_Return_A_Valid_Address_Async()

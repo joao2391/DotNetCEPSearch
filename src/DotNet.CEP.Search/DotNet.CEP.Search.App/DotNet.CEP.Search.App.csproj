@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DocumentationFile>C:\Users\JoãoPaulo\source\repos\DotNetCEPSearch\src\DotNet.CEP.Search\DotNet.CEP.Search.App\DotNet.CEP.Search.App.xml</DocumentationFile>
+    <DocumentationFile>.\DotNet.CEP.Search.App.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

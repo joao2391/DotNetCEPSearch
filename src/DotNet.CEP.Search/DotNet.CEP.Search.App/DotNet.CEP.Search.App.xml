@@ -4,11 +4,17 @@
         <name>DotNet.CEP.Search.App</name>
     </assembly>
     <members>
-        <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCepAsync(System.String)">
+        <member name="T:DotNet.CEP.Search.App.CepSearch">
+            <summary>
+            Cep Search
+            </summary>
+        </member>
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCepAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Returns the address
             </summary>
             <param name="cep">CEP number without '-'</param>
+            <param name="cancellationToken">Token to cancel task</param>
             <returns>JSON with address</returns>
         </member>
         <member name="M:DotNet.CEP.Search.App.CepSearch.GetAddressByCep(System.String)">
@@ -18,11 +24,12 @@
             <param name="cep">CEP number without '-'</param>
             <returns>JSON with address</returns>
         </member>
-        <member name="M:DotNet.CEP.Search.App.CepSearch.GetCepByAddressAsync(System.String)">
+        <member name="M:DotNet.CEP.Search.App.CepSearch.GetCepByAddressAsync(System.String,System.Threading.CancellationToken)">
             <summary>
             Returns the CEP number
             </summary>
             <param name="address">Full or partial address</param>
+            <param name="cancellationToken">Token to cancel task</param>
             <returns>JSON with CEP number</returns>
         </member>
         <member name="M:DotNet.CEP.Search.App.CepSearch.GetCepByAddress(System.String)">

@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
-using System.Net;
-using System.Net.Security;
-using System.Security.Cryptography.X509Certificates;
+using Newtonsoft.Json;
 using System.Threading;
 
 namespace DotNet.CEP.Search.App
@@ -15,14 +13,7 @@ namespace DotNet.CEP.Search.App
     /// Cep Search
     /// </summary>
     public class CepSearch : BaseCepSearch, ICepSearch
-    {
-        // public CepSearch()
-        // {
-        //     ServicePointManager.ServerCertificateValidationCallback =  delegate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) 
-        //     { 
-        //         return true; 
-        //     };
-        // }
+    {       
 
         /// <summary>
         /// Returns the address
@@ -34,34 +25,17 @@ namespace DotNet.CEP.Search.App
         {
             try
             {
-                var dict = new Dictionary<string, string>
-                {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",cep },
-                    {"tipoCEP","ALL" }
-                };
-                
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
-                {
-                    Content = new FormUrlEncodedContent(dict),                    
-                };
+                var address = await GetAddressFromCorreiosByCep(cep, cancellationToken).ConfigureAwait(false);
 
-                var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
-                var cepResponse = await httpResponse.Content.ReadAsStringAsync();
-
-                return cepResponse;
+                return address;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw httpEx;
+                throw;
             }
-            catch (HtmlWebException htmlEx)
+            catch (JsonSerializationException)
             {
-                throw htmlEx;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                throw;
             }
         }
 
@@ -74,34 +48,19 @@ namespace DotNet.CEP.Search.App
         {
             try
             {
-                var dict = new Dictionary<string, string>
-                {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",cep },
-                    {"tipoCEP","ALL" }
-                };
+
+                var address = GetAddressFromCorreiosByCep(cep, new CancellationToken()).Result;
+
+                return address;
                 
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
-                {
-                    Content = new FormUrlEncodedContent(dict),                    
-                };
-
-                var httpResponse = _client.SendAsync(httpRequest).Result;
-                var cepResponse = httpResponse.Content.ReadAsStringAsync().Result;
-
-                return cepResponse;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw httpEx;
+                throw;
             }
-            catch (HtmlWebException htmlEx)
+            catch (JsonSerializationException)
             {
-                throw htmlEx;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                throw;
             }
         }
 
@@ -115,34 +74,17 @@ namespace DotNet.CEP.Search.App
         {
             try
             {
-                var dict = new Dictionary<string, string>
-                {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",address},
-                    {"tipoCEP","ALL" }
-                };
-                
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
-                {
-                    Content = new FormUrlEncodedContent(dict),                    
-                };
+                var cep = await GetCepFromCorreiosByAddress(address, cancellationToken).ConfigureAwait(false);
 
-                var httpResponse = await _client.SendAsync(httpRequest, cancellationToken);
-                var cepResponse = await httpResponse.Content.ReadAsStringAsync();
-
-                return cepResponse;
+                return cep;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw httpEx;
+                throw;
             }
-            catch (HtmlWebException htmlEx)
+            catch (JsonSerializationException)
             {
-                throw htmlEx;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                throw;
             }
         }
 
@@ -155,36 +97,101 @@ namespace DotNet.CEP.Search.App
         {
             try
             {
-                var dict = new Dictionary<string, string>
-                {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",address},
-                    {"tipoCEP","ALL" }
-                };
-                
-                var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
-                {
-                    Content = new FormUrlEncodedContent(dict),                    
-                };
+                var cep = GetCepFromCorreiosByAddress(address, new CancellationToken()).Result;
 
-                var httpResponse = _client.SendAsync(httpRequest).Result;
-                var cepResponse =  httpResponse.Content.ReadAsStringAsync().Result;
-
-                return cepResponse;
+                return cep;
             }
-            catch (HttpRequestException httpEx)
+            catch (HttpRequestException)
             {
-                throw httpEx;
+                throw;
             }
-            catch (HtmlWebException htmlEx)
+            catch (JsonSerializationException)
             {
-                throw htmlEx;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
+                throw;
             }
         }
-        
+
+        private async Task<string> GetAddressFromCorreiosByCep(string cep, CancellationToken cancellationToken)
+        {
+            var dict = new Dictionary<string, string>
+                {
+                    {"pagina","/app/endereco/index.php"},
+                    {"endereco",cep },
+                    {"tipoCEP","ALL" }
+                };
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            {
+                Content = new FormUrlEncodedContent(dict),
+            };
+            
+            var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+            var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+
+            var address = new ResponseAddress();
+
+            for (int i = 0; i < respConvertido?.Dados.Length; i++)
+            {
+                address.Bairro = respConvertido.Dados[i].Bairro;
+                address.Cep = respConvertido.Dados[i].Cep;
+                address.Cidade = respConvertido.Dados[i].Localidade;
+                address.Rua = respConvertido.Dados[i].LogradouroDNEC;
+                address.Uf = respConvertido.Dados[i].Uf;
+            }
+
+            var infoFromCorreios = JsonConvert.SerializeObject(address);
+
+
+            return infoFromCorreios;
+        }
+
+        private async Task<string> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
+        {
+            var dict = new Dictionary<string, string>
+                {
+                    {"pagina","/app/endereco/index.php"},
+                    {"endereco",address },
+                    {"tipoCEP","ALL" }
+                };
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            {
+                Content = new FormUrlEncodedContent(dict),
+            };
+
+            var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+
+            var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+
+            var dataLength = respConvertido.Dados.Length;
+
+            var cep = new ResponseCep
+            {
+                Infos = new CepInfo[dataLength]
+            };
+
+            for (int i = 0; i < respConvertido?.Dados.Length; i++)
+            {                
+
+                cep.Infos[i] = new CepInfo
+                {
+                    Bairro = respConvertido.Dados[i].Bairro,
+                    Cep = respConvertido.Dados[i].Cep,
+                    Cidade = respConvertido.Dados[i].Localidade,
+                    Rua = respConvertido.Dados[i].LogradouroDNEC,
+                    Uf = respConvertido.Dados[i].Uf
+                };
+            }
+
+             var infoFromCorreios = JsonConvert.SerializeObject(cep);
+
+
+            return infoFromCorreios;
+        }
+
     }
 }
