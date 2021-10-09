@@ -13,6 +13,7 @@
     <PackageProjectUrl>https://github.com/joao2391/DotNetCEPSearch</PackageProjectUrl>
     <PackageId>DotNetCEPSearch</PackageId>
     <Version>1.0.2</Version>
+	<DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -20,7 +21,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 

@@ -1,6 +1,4 @@
 ﻿using DotNet.CEP.Search.App.Models;
-using HtmlAgilityPack;
-using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -130,15 +128,20 @@ namespace DotNet.CEP.Search.App
 
             var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
 
-            var address = new ResponseAddress();
+            var size = respConvertido.Dados.Length;
 
-            for (int i = 0; i < respConvertido?.Dados.Length; i++)
+            var address = new ResponseAddress[size];
+
+            for (int i = 0; i < size; i++)
             {
-                address.Bairro = respConvertido.Dados[i].Bairro;
-                address.Cep = respConvertido.Dados[i].Cep;
-                address.Cidade = respConvertido.Dados[i].Localidade;
-                address.Rua = respConvertido.Dados[i].LogradouroDNEC;
-                address.Uf = respConvertido.Dados[i].Uf;
+                address[i] = new ResponseAddress
+                {
+                    Bairro = respConvertido.Dados[i].Bairro,
+                    Cep = respConvertido.Dados[i].Cep,
+                    Cidade = respConvertido.Dados[i].Localidade,
+                    Rua = respConvertido.Dados[i].LogradouroDNEC,
+                    Uf = respConvertido.Dados[i].Uf
+                };
             }
 
             var infoFromCorreios = JsonConvert.SerializeObject(address);
