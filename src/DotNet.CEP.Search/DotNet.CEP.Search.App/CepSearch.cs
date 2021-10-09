@@ -19,7 +19,7 @@ namespace DotNet.CEP.Search.App
         /// <param name="cep">CEP number without '-'</param>
         /// <param name="cancellationToken">Token to cancel task</param>
         /// <returns>JSON with address</returns>
-        public async Task<string> GetAddressByCepAsync(string cep, CancellationToken cancellationToken = default)
+        public async Task<ResponseAddress> GetAddressByCepAsync(string cep, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace DotNet.CEP.Search.App
         /// </summary>
         /// <param name="cep">CEP number without '-'</param>
         /// <returns>JSON with address</returns>
-        public string GetAddressByCep(string cep)
+        public ResponseAddress GetAddressByCep(string cep)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace DotNet.CEP.Search.App
         /// <param name="address">Full or partial address</param>
         /// <param name="cancellationToken">Token to cancel task</param>
         /// <returns>JSON with CEP number</returns>
-        public async Task<string> GetCepByAddressAsync(string address, CancellationToken cancellationToken = default)
+        public async Task<ResponseCep> GetCepByAddressAsync(string address, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -91,7 +91,7 @@ namespace DotNet.CEP.Search.App
         /// </summary>
         /// <param name="address">Full or partial address</param>
         /// <returns>JSON with CEP number</returns>
-        public string GetCepByAddress(string address)
+        public ResponseCep GetCepByAddress(string address)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace DotNet.CEP.Search.App
             }
         }
 
-        private async Task<string> GetAddressFromCorreiosByCep(string cep, CancellationToken cancellationToken)
+        private async Task<ResponseAddress> GetAddressFromCorreiosByCep(string cep, CancellationToken cancellationToken)
         {
             var dict = new Dictionary<string, string>
                 {
@@ -130,11 +130,14 @@ namespace DotNet.CEP.Search.App
 
             var size = respConvertido.Dados.Length;
 
-            var address = new ResponseAddress[size];
+            var address = new ResponseAddress()
+            {
+                Infos =  new AddressInfo[size]
+            };
 
             for (int i = 0; i < size; i++)
             {
-                address[i] = new ResponseAddress
+                address.Infos[i] = new AddressInfo
                 {
                     Bairro = respConvertido.Dados[i].Bairro,
                     Cep = respConvertido.Dados[i].Cep,
@@ -144,13 +147,10 @@ namespace DotNet.CEP.Search.App
                 };
             }
 
-            var infoFromCorreios = JsonConvert.SerializeObject(address);
-
-
-            return infoFromCorreios;
+            return address;
         }
 
-        private async Task<string> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
+        private async Task<ResponseCep> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
         {
             var dict = new Dictionary<string, string>
                 {
@@ -190,10 +190,8 @@ namespace DotNet.CEP.Search.App
                 };
             }
 
-             var infoFromCorreios = JsonConvert.SerializeObject(cep);
 
-
-            return infoFromCorreios;
+            return cep;
         }
 
     }

@@ -5,12 +5,12 @@ namespace DotNet.CEP.Search.App.Models
 {
     public interface ICepSearch
     {
-        Task<string> GetAddressByCepAsync(string cep, CancellationToken cancellationToken);
+        Task<ResponseAddress> GetAddressByCepAsync(string cep, CancellationToken cancellationToken);
 
-        string GetAddressByCep(string cep);
+        ResponseAddress GetAddressByCep(string cep);
 
-        Task<string> GetCepByAddressAsync(string address, CancellationToken cancellationToken);
+        Task<ResponseCep> GetCepByAddressAsync(string address, CancellationToken cancellationToken);
 
-        string GetCepByAddress(string address);
+        ResponseCep GetCepByAddress(string address);
     }
 }

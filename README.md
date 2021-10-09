@@ -6,16 +6,17 @@ It is a .NET Standard library that helps you to get a CEP or Address from brazil
 You can use both in .NET Framework 4.x and .NET Core 2.x applications.
 
 ## Notes
-Version 1.0.2:
+Version 1.1.0:
 
-Fixed URI principal
+- Migrated to dotnet 5
+- Changed return's type
 
 ## Installation
 
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearch -Version 1.0.2
+Install-Package DotNetCEPSearch -Version 1.1.0
 ```
 
 ## Usage
@@ -27,16 +28,21 @@ using DotNet.CEP.Search.App;
 Get Addres by CEP
 ```C#
 CepSearch cep = new CepSearch();
-string jsonResultAsync = await cep.GetAddressByCepAsync("numberOfCep");
+// Returns an object's array with 
+//Rua, Bairro, Cidade, Cep, Uf
+var addressAsync = await cep.GetAddressByCepAsync("CEP");
 
-string jsonResult = GetAddressByCep("numberOfCep");
+var address = GetAddressByCep("CEP");
 ```
+
 Get CEP by Address
 ```C#
 CepSearch cep = new CepSearch();
-string jsonResultAsync = await cep.GetCepByAddressAsync("address");
+// Returns an object's array with 
+//Rua, Bairro, Cidade, Cep, Uf
+var cepAsync = await cep.GetCepByAddressAsync("address");
 
-string jsonResult = cep.GetCepByAddress("address");
+var cep = cep.GetCepByAddress("address");
 ```
 
 ## Contributing

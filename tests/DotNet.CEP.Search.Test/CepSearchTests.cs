@@ -1,4 +1,5 @@
 using DotNet.CEP.Search.App;
+using DotNet.CEP.Search.App.Models;
 using NUnit.Framework;
 using System.Threading.Tasks;
 
@@ -19,6 +20,7 @@ namespace Tests
             var result = await cep.GetAddressByCepAsync(FakeData.validCep);            
 
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ResponseAddress>(result);
         }
 
         [Test]
@@ -29,6 +31,7 @@ namespace Tests
             var result = cep.GetAddressByCep(FakeData.validCep);
 
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ResponseAddress>(result);
         }
 
         [Test]
@@ -39,6 +42,7 @@ namespace Tests
             var result = await cep.GetCepByAddressAsync(FakeData.validAddress);
 
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ResponseCep>(result);
         }
 
         [Test]
@@ -49,6 +53,7 @@ namespace Tests
             var result = cep.GetCepByAddress(FakeData.validAddress);
 
             Assert.IsNotNull(result);
+            Assert.IsInstanceOf<ResponseCep>(result);
         }
     }
 }
