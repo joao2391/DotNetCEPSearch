@@ -6,17 +6,16 @@ It is a .NET 5 library that helps you to get a CEP or Address from brazilian's p
 You can use both in .NET Framework 4.x and .NET Core 2.x applications.
 
 ## Notes
-Version 1.1.0:
+Version 1.1.1:
 
-- Migrated to dotnet 5
-- Changed return's type
+- Upgrade to .NET 6
 
 ## Installation
 
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearch -Version 1.1.0
+Install-Package DotNetCEPSearch -Version 1.1.1
 ```
 
 ## Usage
