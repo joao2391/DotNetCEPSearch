@@ -2,7 +2,7 @@
 
 [![Nuget](https://img.shields.io/nuget/v/DotNetCEPSearch)](https://www.nuget.org/packages/DotNetCEPSearch/) ![Nuget](https://img.shields.io/nuget/dt/DotNetCEPSearch)
 
-This library that helps you to get a CEP or Address from brazilian's postal service.
+This library helps you to get a CEP or Address from brazilian's postal service.
 
 ## Notes
 Version 1.1.1:
