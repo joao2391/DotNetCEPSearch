@@ -11,7 +11,7 @@ namespace DotNet.CEP.Search.App
     /// Cep Search
     /// </summary>
     public class CepSearch : BaseCepSearch, ICepSearch
-    {       
+    {
 
         /// <summary>
         /// Returns the address
@@ -38,6 +38,30 @@ namespace DotNet.CEP.Search.App
         }
 
         /// <summary>
+        /// Returns the raw data address 
+        /// </summary>
+        /// <param name="cep">CEP number without '-'</param>
+        /// <param name="cancellationToken">Token to cancel task</param>
+        /// <returns>JSON with address</returns>
+        public async Task<ResponseCorreios> GetAddressByCepRawDataAsync(string cep, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var address = await GetAddressFromCorreiosByCepRawData(cep, cancellationToken).ConfigureAwait(false);
+
+                return address;
+            }
+            catch (HttpRequestException)
+            {
+                throw;
+            }
+            catch (JsonSerializationException)
+            {
+                throw;
+            }
+        }
+
+        /// <summary>
         /// Returns the address
         /// </summary>
         /// <param name="cep">CEP number without '-'</param>
@@ -50,7 +74,7 @@ namespace DotNet.CEP.Search.App
                 var address = GetAddressFromCorreiosByCep(cep, new CancellationToken()).Result;
 
                 return address;
-                
+
             }
             catch (HttpRequestException)
             {
@@ -122,7 +146,7 @@ namespace DotNet.CEP.Search.App
             {
                 Content = new FormUrlEncodedContent(dict),
             };
-            
+
             var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
             var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
@@ -132,7 +156,7 @@ namespace DotNet.CEP.Search.App
 
             var address = new ResponseAddress()
             {
-                Infos =  new AddressInfo[size]
+                Infos = new AddressInfo[size]
             };
 
             for (int i = 0; i < size; i++)
@@ -148,6 +172,27 @@ namespace DotNet.CEP.Search.App
             }
 
             return address;
+        }
+
+        private async Task<ResponseCorreios> GetAddressFromCorreiosByCepRawData(string cep, CancellationToken cancellationToken)
+        {
+            var dict = new Dictionary<string, string>
+                {
+                    {"pagina","/app/endereco/index.php"},
+                    {"endereco",cep },
+                    {"tipoCEP","ALL" }
+                };
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            {
+                Content = new FormUrlEncodedContent(dict),
+            };
+
+            var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+            var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+
+            return respConvertido;
         }
 
         private async Task<ResponseCep> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
@@ -178,7 +223,7 @@ namespace DotNet.CEP.Search.App
             };
 
             for (int i = 0; i < respConvertido?.Dados.Length; i++)
-            {                
+            {
 
                 cep.Infos[i] = new CepInfo
                 {
