@@ -4,6 +4,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Threading;
+using HtmlAgilityPack;
 
 namespace DotNet.CEP.Search.App
 {
