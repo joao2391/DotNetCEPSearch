@@ -10,7 +10,10 @@ namespace Tests
 
 
         [SetUp]
-        public void Setup() { }
+        public void Setup() 
+        {
+
+        }
 
         [Test]
         public async Task Should_Return_A_Valid_Address_Async()

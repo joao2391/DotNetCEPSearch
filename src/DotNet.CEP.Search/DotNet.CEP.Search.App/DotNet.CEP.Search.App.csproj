@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Authors>João Paulo de Castro Lima</Authors>
     <Product />
     <Description>It is a library that helps you to get a CEP or Address.</Description>
@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.23" />
   </ItemGroup>
 
 </Project>

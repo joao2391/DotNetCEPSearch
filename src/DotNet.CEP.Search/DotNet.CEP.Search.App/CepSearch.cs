@@ -12,7 +12,7 @@ namespace DotNet.CEP.Search.App
     /// Cep Search
     /// </summary>
     public class CepSearch : BaseCepSearch, ICepSearch
-    {       
+    {
 
         /// <summary>
         /// Returns the address
@@ -51,7 +51,7 @@ namespace DotNet.CEP.Search.App
                 var address = GetAddressFromCorreiosByCep(cep, new CancellationToken()).Result;
 
                 return address;
-                
+
             }
             catch (HttpRequestException)
             {
@@ -114,50 +114,88 @@ namespace DotNet.CEP.Search.App
         {
             var dict = new Dictionary<string, string>
                 {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",cep },
-                    {"tipoCEP","ALL" }
+                    // {"pagina","/app/endereco/index.php"},
+                    // {"endereco",cep },
+                    // {"tipoCEP","ALL" }
+                    {"CEP",cep}
+                    //{"tipoCEP","ALL" },
+                    //{"semelhante","N" }
                 };
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
             {
                 Content = new FormUrlEncodedContent(dict),
             };
-            
+
             var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
-            var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
 
-            var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+            var html = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var size = respConvertido.Dados.Length;
+            var htmlDoc = new HtmlDocument();
 
-            var address = new ResponseAddress()
+            htmlDoc.LoadHtml(html);
+
+            var name = htmlDoc.DocumentNode.SelectNodes("//td");
+
+            if (name == null)
             {
-                Infos =  new AddressInfo[size]
-            };
-
-            for (int i = 0; i < size; i++)
-            {
-                address.Infos[i] = new AddressInfo
-                {
-                    Bairro = respConvertido.Dados[i].Bairro,
-                    Cep = respConvertido.Dados[i].Cep,
-                    Cidade = respConvertido.Dados[i].Localidade,
-                    Rua = respConvertido.Dados[i].LogradouroDNEC,
-                    Uf = respConvertido.Dados[i].Uf
-                };
+                //TODO - Check
+                throw new NodeNotFoundException();
             }
 
-            return address;
+            string bairro = name[1].InnerText.Replace("&nbsp;", string.Empty);
+            string numeroCep = name[3].InnerText.Replace("&nbsp;", string.Empty);
+            string cidade = name[2].InnerText.Replace("&nbsp;", string.Empty);
+            string uf = name[2].InnerText.Replace("&nbsp;", string.Empty).Split("/")[1];
+            string rua = name[0].InnerText.Replace("&nbsp;", string.Empty);
+
+            var responseAddress = new ResponseAddress
+            {
+                Bairro = bairro,
+                Cep = numeroCep,
+                Cidade = cidade,
+                Rua = rua,
+                Uf = uf
+            };
+
+            return responseAddress;
+
+            // var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            // var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+
+            // var size = respConvertido.Dados.Length;
+
+            // var address = new ResponseAddress()
+            // {
+            //     Infos =  new AddressInfo[size]
+            // };
+
+            // for (int i = 0; i < size; i++)
+            // {
+            //     address.Infos[i] = new AddressInfo
+            //     {
+            //         Bairro = respConvertido.Dados[i].Bairro,
+            //         Cep = respConvertido.Dados[i].Cep,
+            //         Cidade = respConvertido.Dados[i].Localidade,
+            //         Rua = respConvertido.Dados[i].LogradouroDNEC,
+            //         Uf = respConvertido.Dados[i].Uf
+            //     };
+            // }
+
+            //return address;
         }
 
         private async Task<ResponseCep> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
         {
             var dict = new Dictionary<string, string>
                 {
-                    {"pagina","/app/endereco/index.php"},
-                    {"endereco",address },
-                    {"tipoCEP","ALL" }
+                    // {"pagina","/app/endereco/index.php"},
+                    // {"endereco",address },
+                    // {"tipoCEP","ALL" }
+                    {"relaxation", address},
+                    {"tipoCEP", "ALL"},
+                    {"semelhante", "N"}
                 };
 
             var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
@@ -167,32 +205,188 @@ namespace DotNet.CEP.Search.App
 
             var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
 
-            var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+            var html = await httpResponse.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+            var hsRespEndereco = new HashSet<ResponseAddress>();
 
-            var dataLength = respConvertido.Dados.Length;
+            var hasNextPage = false;
 
-            var cep = new ResponseCep
+            var htmlDoc = new HtmlDocument();
+
+            htmlDoc.LoadHtml(html);
+
+            var link = htmlDoc.DocumentNode.SelectNodes("//div//a");
+
+            if (link is null)
             {
-                Infos = new CepInfo[dataLength]
-            };
+                //TODO
+            }
 
-            for (int i = 0; i < respConvertido?.Dados.Length; i++)
-            {                
-
-                cep.Infos[i] = new CepInfo
+            for (int i = 0; i < link.Count; i++)
+            {
+                if (link[i].InnerHtml.Contains("[ Próxima ]"))
                 {
-                    Bairro = respConvertido.Dados[i].Bairro,
-                    Cep = respConvertido.Dados[i].Cep,
-                    Cidade = respConvertido.Dados[i].Localidade,
-                    Rua = respConvertido.Dados[i].LogradouroDNEC,
-                    Uf = respConvertido.Dados[i].Uf
-                };
+                    hasNextPage = true;
+                }
+            }
+
+            var name = htmlDoc.DocumentNode.SelectNodes("//td");
+            var divCtrlContent = htmlDoc.DocumentNode.SelectNodes("//div[@class='ctrlcontent']");
+            var numPages = divCtrlContent[0].OuterHtml.Substring(1068, 13);
+
+            if (name == null)
+            {
+                //TODO - check
+                throw new NodeNotFoundException();
+            }
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                if (i % 4 == 0)
+                {
+                    var reponseEndereco = new ResponseAddress
+                    {
+                        Bairro = name[i + 1].InnerText.Replace("&nbsp;", string.Empty),
+                        Cep = name[i + 3].InnerText.Replace("&nbsp;", string.Empty),
+                        Cidade = name[i + 2].InnerText.Replace("&nbsp;", string.Empty),
+                        Rua = name[i].InnerText.Replace("&nbsp;", string.Empty),
+                    };
+
+                    hsRespEndereco.Add(reponseEndereco);
+                }
+            }
+
+            if (hasNextPage)
+            {
+                AcessaProximasPaginas(hsRespEndereco, address, numPages);
             }
 
 
-            return cep;
+            return new ResponseCep();
+
+            // var httpResponse = await _client.SendAsync(httpRequest, cancellationToken).ConfigureAwait(false);
+
+            // var cepResponse = await httpResponse.Content.ReadAsStringAsync(cancellationToken).ConfigureAwait(false);
+
+            // var respConvertido = JsonConvert.DeserializeObject<ResponseCorreios>(cepResponse);
+
+            // var dataLength = respConvertido.Dados.Length;
+
+            // var cep = new ResponseCep
+            // {
+            //     Infos = new CepInfo[dataLength]
+            // };
+
+            // for (int i = 0; i < respConvertido?.Dados.Length; i++)
+            // {
+
+            //     cep.Infos[i] = new CepInfo
+            //     {
+            //         Bairro = respConvertido.Dados[i].Bairro,
+            //         Cep = respConvertido.Dados[i].Cep,
+            //         Cidade = respConvertido.Dados[i].Localidade,
+            //         Rua = respConvertido.Dados[i].LogradouroDNEC,
+            //         Uf = respConvertido.Dados[i].Uf
+            //     };
+            // }
+
+
+            // return cep;
+        }
+
+        private void AcessaProximasPaginas(HashSet<ResponseAddress> hsRespEnd, string endereco,
+                                            string numPages, int pageIni = 51, int pageFim = 100)
+        {
+            bool hasNextPage = false;
+            var dict = new Dictionary<string, string>
+            {
+                {"relaxation", endereco},
+                {"tipoCEP", "ALL"},
+                {"semelhante", "N"},
+                {"qtdrow", "50"},
+                {"pagIni", pageIni.ToString()},
+                {"pagFim", pageFim.ToString()}
+            };
+
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            {
+                Content = new FormUrlEncodedContent(dict)
+            };
+
+            var httpResponse = _client.SendAsync(httpRequest).Result.Content.ReadAsStringAsync();
+
+            var html = httpResponse.Result;
+
+            var docHtml = new HtmlDocument();
+            docHtml.LoadHtml(html);
+
+            var name = docHtml.DocumentNode.SelectNodes("//td");
+
+            if (!hasNextPage)
+            {
+                var link = docHtml.DocumentNode.SelectNodes("//div//a");
+
+                for (int i = 0; i < link.Count; i++)
+                {
+                    if (link[i].InnerHtml.Contains("[ Próxima ]"))
+                    {
+                        hasNextPage = true;
+                        pageIni += 25;
+                        pageFim += 25;
+                    }
+                }
+            }
+
+            for (int i = 0; i < name.Count; i++)
+            {
+                if (i % 4 == 0)
+                {
+                    var reponseEndereco = new ResponseAddress
+                    {
+                        Bairro = name[i + 1].InnerText.Replace("&nbsp;", string.Empty),
+                        Cep = name[i + 3].InnerText.Replace("&nbsp;", string.Empty),
+                        Cidade = name[i + 2].InnerText.Replace("&nbsp;", string.Empty),
+                        Rua = name[i].InnerText.Replace("&nbsp;", string.Empty),
+                    };
+
+                    hsRespEnd.Add(reponseEndereco);
+                }
+            }
+
+            if (hasNextPage)
+            {
+                AcessaProximasPaginas(hsRespEnd, endereco, numPages, pageIni, pageFim);
+            }
+
+
+        }
+
+        private ResponseAddress BuildResponseAddress(HtmlNodeCollection nodes) //where T: new()
+        {
+            var response = new ResponseAddress
+            {
+                Bairro = nodes[1].InnerText.Replace("&nbsp;", string.Empty),
+                Cep = nodes[3].InnerText.Replace("&nbsp;", string.Empty),
+                Cidade = nodes[2].InnerText.Replace("&nbsp;", string.Empty),
+                Rua = nodes[0].InnerText.Replace("&nbsp;", string.Empty),
+                Uf = nodes[2].InnerText.Replace("&nbsp;", string.Empty).Split("/")[1]
+            };
+
+            return response;
+        }
+
+        private ResponseCep BuildResponseCep(HtmlNodeCollection nodes)
+        {
+            var response = new ResponseCep
+            {
+                Bairro = nodes[1].InnerText.Replace("&nbsp;", string.Empty),
+                Cep = nodes[3].InnerText.Replace("&nbsp;", string.Empty),
+                Cidade = nodes[2].InnerText.Replace("&nbsp;", string.Empty),
+                Rua = nodes[0].InnerText.Replace("&nbsp;", string.Empty),
+                Uf = nodes[2].InnerText.Replace("&nbsp;", string.Empty).Split("/")[1]
+            };
+
+            return response;
         }
 
     }
