@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace DotNet.CEP.Search.App.Models
 {
@@ -9,8 +10,8 @@ namespace DotNet.CEP.Search.App.Models
 
         ResponseAddress GetAddressByCep(string cep);
 
-        Task<ResponseCep> GetCepByAddressAsync(string address, CancellationToken cancellationToken);
+        Task<HashSet<ResponseCep>> GetCepByAddressAsync(string address, CancellationToken cancellationToken);
 
-        ResponseCep GetCepByAddress(string address);
+        HashSet<ResponseCep> GetCepByAddress(string address);
     }
 }

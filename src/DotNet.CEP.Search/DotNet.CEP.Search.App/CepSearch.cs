@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Threading;
 using HtmlAgilityPack;
+using System;
 
 namespace DotNet.CEP.Search.App
 {
@@ -69,7 +70,7 @@ namespace DotNet.CEP.Search.App
         /// <param name="address">Full or partial address</param>
         /// <param name="cancellationToken">Token to cancel task</param>
         /// <returns>JSON with CEP number</returns>
-        public async Task<ResponseCep> GetCepByAddressAsync(string address, CancellationToken cancellationToken = default)
+        public async Task<HashSet<ResponseCep>> GetCepByAddressAsync(string address, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -92,7 +93,7 @@ namespace DotNet.CEP.Search.App
         /// </summary>
         /// <param name="address">Full or partial address</param>
         /// <returns>JSON with CEP number</returns>
-        public ResponseCep GetCepByAddress(string address)
+        public HashSet<ResponseCep> GetCepByAddress(string address)
         {
             try
             {
@@ -117,7 +118,7 @@ namespace DotNet.CEP.Search.App
                     {"CEP",cep}
                 };
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreioGetAddress)
             {
                 Content = new FormUrlEncodedContent(dict),
             };
@@ -143,7 +144,7 @@ namespace DotNet.CEP.Search.App
             return responseAddress;
         }
 
-        private async Task<ResponseCep> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
+        private async Task<HashSet<ResponseCep>> GetCepFromCorreiosByAddress(string address, CancellationToken cancellationToken)
         {
             var dict = new Dictionary<string, string>
                 {
@@ -152,7 +153,7 @@ namespace DotNet.CEP.Search.App
                     {"semelhante", "N"}
                 };
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreioGetCep)
             {
                 Content = new FormUrlEncodedContent(dict),
             };
@@ -209,7 +210,7 @@ namespace DotNet.CEP.Search.App
                 AcessaProximasPaginas(hsRespEndereco, address, numPages);
             }
 
-            return new ResponseCep();
+            return hsRespEndereco;
         }
 
         private void AcessaProximasPaginas(HashSet<ResponseCep> hsRespEnd, string endereco,
@@ -219,6 +220,7 @@ namespace DotNet.CEP.Search.App
             var dict = new Dictionary<string, string>
             {
                 {"relaxation", endereco},
+                {"exata", "5"},
                 {"tipoCEP", "ALL"},
                 {"semelhante", "N"},
                 {"qtdrow", "50"},
@@ -226,7 +228,7 @@ namespace DotNet.CEP.Search.App
                 {"pagFim", pageFim.ToString()}
             };
 
-            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreio)
+            var httpRequest = new HttpRequestMessage(HttpMethod.Post, UrlCorreioGetCep)
             {
                 Content = new FormUrlEncodedContent(dict)
             };
@@ -239,6 +241,10 @@ namespace DotNet.CEP.Search.App
             docHtml.LoadHtml(html);
 
             var name = docHtml.DocumentNode.SelectNodes("//td");
+
+            if(name is null){
+                Console.Write("TODO");
+            }
 
             if (!hasNextPage)
             {

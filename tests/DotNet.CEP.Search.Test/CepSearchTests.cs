@@ -1,6 +1,7 @@
 using DotNet.CEP.Search.App;
 using DotNet.CEP.Search.App.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Tests
@@ -45,7 +46,7 @@ namespace Tests
             var result = await cep.GetCepByAddressAsync(FakeData.validAddress);
 
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ResponseCep>(result);
+            Assert.IsInstanceOf<HashSet<ResponseCep>>(result);
         }
 
         [Test]
