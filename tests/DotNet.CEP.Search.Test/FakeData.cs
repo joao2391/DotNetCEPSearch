@@ -4,7 +4,7 @@ namespace Tests
 {
     public class FakeData
     {
-        public static string validCep = "08499";
+        public static string validCep = "01327-903";
         public static string validAddress = "Rua Frei Caneca";
 
 

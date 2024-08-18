@@ -1,16 +1,21 @@
 using DotNet.CEP.Search.App;
 using DotNet.CEP.Search.App.Models;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Tests
 {
     public class CepSearchTests
     {
-
+        //private string fakeData = File.ReadAllText(@"./fakeData.html");
 
         [SetUp]
-        public void Setup() { }
+        public void Setup() 
+        {
+
+        }
 
         [Test]
         public async Task Should_Return_A_Valid_Address_Async()
@@ -21,6 +26,7 @@ namespace Tests
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ResponseAddress>(result);
+            Assert.IsNotNull(result.Bairro);
         }
 
         [Test]
@@ -32,6 +38,7 @@ namespace Tests
 
             Assert.IsNotNull(result);
             Assert.IsInstanceOf<ResponseAddress>(result);
+            Assert.IsNotNull(result.Bairro);
         }
 
         [Test]
@@ -40,9 +47,9 @@ namespace Tests
             var cep = new CepSearch();
 
             var result = await cep.GetCepByAddressAsync(FakeData.validAddress);
-
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ResponseCep>(result);
+            Assert.IsInstanceOf<HashSet<ResponseCep>>(result);
+            Assert.AreEqual(166, result.Count);
         }
 
         [Test]
@@ -53,7 +60,8 @@ namespace Tests
             var result = cep.GetCepByAddress(FakeData.validAddress);
 
             Assert.IsNotNull(result);
-            Assert.IsInstanceOf<ResponseCep>(result);
+            Assert.IsInstanceOf<HashSet<ResponseCep>>(result);
+            Assert.AreEqual(166, result.Count);
         }
     }
 }
