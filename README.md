@@ -5,9 +5,10 @@
 This library helps you to get a CEP or Address from brazilian's postal service.
 
 ## Notes
-Version 1.1.1:
+Version 1.2.0:
 
-- Upgrade to .NET 6
+- Upgrade to .NET 8
+- Backing to old version to avoid Captcha
 
 ## Installation
 
