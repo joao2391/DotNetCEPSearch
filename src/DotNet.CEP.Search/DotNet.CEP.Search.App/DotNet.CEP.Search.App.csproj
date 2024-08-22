@@ -12,7 +12,7 @@
     <Company>joao2391</Company>
     <PackageProjectUrl>https://github.com/joao2391/DotNetCEPSearch</PackageProjectUrl>
     <PackageId>DotNetCEPSearch</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
 	<DebugType>embedded</DebugType>
   </PropertyGroup>
 
