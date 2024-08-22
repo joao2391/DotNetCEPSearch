@@ -199,9 +199,15 @@ namespace DotNet.CEP.Search.App
             {
                 if (i % 4 == 0)
                 {
-                    var reponseEndereco = BuildResponseCep(name);
+                     var responseCep = new ResponseCep
+                    {
+                        Bairro = name[i + 1].InnerText.Replace("&nbsp;", string.Empty),
+                        Cep = name[i + 3].InnerText.Replace("&nbsp;", string.Empty),
+                        Cidade = name[i + 2].InnerText.Replace("&nbsp;", string.Empty),
+                        Rua = name[i].InnerText.Replace("&nbsp;", string.Empty),
+                    };
 
-                    hsRespEndereco.Add(reponseEndereco);
+                    hsRespEndereco.Add(responseCep);
                 }
             }
 
