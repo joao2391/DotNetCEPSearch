@@ -14,7 +14,7 @@ Version 1.2.1:
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearch -Version 1.1.1
+Install-Package DotNetCEPSearch -Version 1.2.1
 ```
 
 ## Usage
