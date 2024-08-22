@@ -5,7 +5,7 @@
 This library helps you to get a CEP or Address from brazilian's postal service.
 
 ## Notes
-Version 1.2.1:
+Version 1.2.2:
 
 - Fix GetCepByAdress
 
@@ -14,7 +14,7 @@ Version 1.2.1:
 Use the package manager to install.
 
 ```bash
-Install-Package DotNetCEPSearch -Version 1.2.1
+Install-Package DotNetCEPSearch -Version 1.2.2
 ```
 
 ## Usage
